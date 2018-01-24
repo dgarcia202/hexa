@@ -58,7 +58,7 @@ module.exports = (resourceName) => {
       .then(object => {
         client.close();
         console.log("MongoDb connection closed");  
-        resolve(object);
+        resolve({ count: object.insertedCount, data: object.ops });
       })
       .catch(err => {
         reject(err);
@@ -76,9 +76,10 @@ module.exports = (resourceName) => {
         return db.collection(collection).findOneAndReplace({ _id: data._id }, data);
       })
       .then(object => {
+        console.log(object);
         client.close();
         console.log("MongoDb connection closed");  
-        resolve(object);
+        resolve(object.value);
       })
       .catch(err => {
         reject(err);
@@ -97,7 +98,7 @@ module.exports = (resourceName) => {
       .then(object => {
         client.close();
         console.log("MongoDb connection closed");  
-        resolve(object.result.n);
+        resolve({ count: object.result.n });
       })
       .catch(err => {
         reject(err);

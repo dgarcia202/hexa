@@ -1,13 +1,15 @@
 const router = require('express').Router();
 
-const listRoute = require('./apiListRoute.js')();
-const itemRoute = require('./apiItemRoute.js')();
-const insertRoute = require('./apiInsertRoute.js')();
-const deleteRoute = require('./apiDeleteRoute.js')();
+const listHandler = require('./apiListHandler.js')();
+const itemHandler = require('./apiItemHandler.js')();
+const insertHanlder = require('./apiInsertHandler.js')();
+const deleteHandler = require('./apiDeleteHandler.js')();
+const updateHandler = require('./apiUpdateHandler.js')();
 
-router.get('/:resource', listRoute);
-router.get('/:resource/:id', itemRoute);
-router.post('/:resource', insertRoute);
-router.delete('/:resource/:id', deleteRoute);
+router.get('/:resource', listHandler);
+router.get('/:resource/:id', itemHandler);
+router.post('/:resource', insertHanlder);
+router.put('/:resource/:id', updateHandler);
+router.delete('/:resource/:id', deleteHandler);
 
 module.exports = router;
