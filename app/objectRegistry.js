@@ -3,6 +3,27 @@ const configuration = require('../configuration.js');
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 
+function getDatabaseUrl() {
+  return `mongodb://${configuration.database.host}:${configuration.database.port}`;
+}
+
+function schema2DbFormat(schemaObj) {
+  if (Object.getOwnPropertyNames(schemaObj).includes('$schema')) {
+    schemaObj._schema = schemaObj.$schema;
+    delete schemaObj.$schema;
+  }
+  return schemaObj;
+}
+
+function dbFormat2Schema(dbFormat) {
+  delete dbFormat._id;
+  if (Object.getOwnPropertyNames(dbFormat).includes('_schema')) {
+    dbFormat.$schema = dbFormat._schema;
+    delete dbFormat._schema;
+  }
+  return dbFormat;
+}
+
 module.exports.update = () => {
   return new Promise((resolve, reject) => {
     console.log('updating schema...');    
@@ -19,14 +40,13 @@ module.exports.update = () => {
       files.forEach(file => {
         let objectDefinition = require(`../defs/${file}`);
         objectRegistry.push(objectDefinition);
-        console.log(`Added object definition for '${objectDefinition.title}'`);       
       });
 
       // Opens connection with database.
       let client = null;
       let db = null;
       let existingCollectionNames = [];
-      MongoClient.connect(`mongodb://${configuration.database.host}:${configuration.database.port}`).then(x => {
+      MongoClient.connect(getDatabaseUrl()).then(x => {
         client = x;
         db = client.db(configuration.database.name);
         console.log("Connected successfully to MongoDb");
@@ -50,12 +70,7 @@ module.exports.update = () => {
         let promises = [];
         objectRegistry.forEach((x) => {
           console.log(`Saved schema '${x.id}'`);  
-
-          if (Object.getOwnPropertyNames(x).includes('$schema')) {
-            delete x.$schema;
-          }
-
-          promises.push(db.collection(configuration.objectRegistryCollectionName).insertOne(x));
+          promises.push(db.collection(configuration.objectRegistryCollectionName).insertOne(schema2DbFormat(x)));
         });
         return Promise.all(promises);
       })
@@ -89,19 +104,35 @@ module.exports.getDefinitionById = id => {
     // Opens connection with database.
     let client = null;
     let db = null;
-    MongoClient.connect(`mongodb://${configuration.database.host}:${configuration.database.port}`).then(x => {
+    MongoClient.connect(getDatabaseUrl()).then(x => {
       client = x;
       db = client.db(configuration.database.name);
-      console.log("Connected successfully to MongoDb");
-
-      console.log(`Sendng object definition with id ${id}`);
       return db.collection(configuration.objectRegistryCollectionName).findOne({ id: id });
     })
     .then(data => {
       // Dispose database connection.
       client.close();
-      console.log("MongoDb connection closed");            
-      resolve(data);
+      resolve(dbFormat2Schema(data));
+    })  
+    .catch(err => {
+      reject(err);
+    });
+  })
+};
+
+module.exports.getAllDefinitions = () => {
+  return new Promise((resolve, reject) => {
+    // Opens connection with database.
+    let client = null;
+    let db = null;
+    MongoClient.connect(getDatabaseUrl()).then(x => {
+      client = x;
+      db = client.db(configuration.database.name);
+      return db.collection(configuration.objectRegistryCollectionName).find({}).toArray();
+    })
+    .then(data => {
+      client.close();
+      resolve(data.map(dbFormat2Schema));
     })  
     .catch(err => {
       reject(err);
