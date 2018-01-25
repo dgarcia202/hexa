@@ -8,7 +8,7 @@ module.exports = () => {  // Inject dependencies here
       res.status(201).send(data);      
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(500).send(err);
     });
   }
 }

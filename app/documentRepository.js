@@ -17,10 +17,9 @@ module.exports = (resourceName) => {
         let db = client.db(configuration.database.name);
         return db.collection(collection).find({}).toArray();
       })
-      .then(data => {
+      .then(items => {
         client.close();
-        console.log("MongoDb connection closed");  
-        resolve(data);
+        resolve({ count: items.length, data: items });
       })
       .catch(err => {
         reject(err);
@@ -38,8 +37,13 @@ module.exports = (resourceName) => {
       })
       .then(object => {
         client.close();
-        console.log("MongoDb connection closed");  
-        resolve(object);
+
+        var result =  {};
+        result.count = object == null ? 0 : 1;
+        if (object != null) {
+          result.data = object;
+        }
+        resolve(result);
       })
       .catch(err => {
         reject(err);
@@ -57,7 +61,6 @@ module.exports = (resourceName) => {
       })
       .then(object => {
         client.close();
-        console.log("MongoDb connection closed");  
         resolve({ count: object.insertedCount, data: object.ops });
       })
       .catch(err => {
@@ -69,17 +72,24 @@ module.exports = (resourceName) => {
   function updateDocument(collection, id, data) {
     return new Promise((resolve, reject) => {
       let client = null;
+      let db = null;
+      let operationCount = 0;
       MongoClient.connect(getDatabaseUrl()).then(x => {
         client = x;
-        let db = client.db(configuration.database.name);
+        db = client.db(configuration.database.name);
         data._id = new ObjectID(id);
         return db.collection(collection).findOneAndReplace({ _id: data._id }, data);
       })
       .then(object => {
-        console.log(object);
+        if (object.value == null) {
+          resolve({ count: 0 });
+        }
+        operationCount = object.lastErrorObject.n;
+        return db.collection(collection).find({ _id: new ObjectID(object.value._id)}).next();
+      })
+      .then(savedObject => {
         client.close();
-        console.log("MongoDb connection closed");  
-        resolve(object.value);
+        resolve({ count: operationCount, data: savedObject });
       })
       .catch(err => {
         reject(err);

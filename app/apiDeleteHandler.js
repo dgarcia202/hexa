@@ -9,10 +9,10 @@ module.exports = () => {  // Inject dependencies here
         res.status(404).send();
       } else {
         res.send();
-      }
+      } 
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(500).send(err);
     });
   }
 }
