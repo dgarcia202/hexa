@@ -1,6 +1,4 @@
-const validator = require('./validator.js');
-
-module.exports = () => {  // Inject dependencies here
+module.exports = (validator) => {  // Inject dependencies here
   return (req, res, next) => {
     console.log(`Validating content for resource ${req.params.resource}`);
     validator.validate(req.params.resource, req.body).then(result => {

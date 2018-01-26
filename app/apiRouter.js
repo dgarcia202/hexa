@@ -1,11 +1,14 @@
 const router = require('express').Router();
 
-const listHandler = require('./apiListHandler.js')();
-const itemHandler = require('./apiItemHandler.js')();
-const insertHandler = require('./apiInsertHandler.js')();
-const deleteHandler = require('./apiDeleteHandler.js')();
-const updateHandler = require('./apiUpdateHandler.js')();
-const validationHandler = require('./apiValidationHandler.js')();
+const repositoryBuilder = require('./repositoryBuilder.js');
+const validator = require('./validator.js');
+
+const listHandler = require('./apiListHandler.js')(repositoryBuilder);
+const itemHandler = require('./apiItemHandler.js')(repositoryBuilder);
+const insertHandler = require('./apiInsertHandler.js')(repositoryBuilder);
+const deleteHandler = require('./apiDeleteHandler.js')(repositoryBuilder);
+const updateHandler = require('./apiUpdateHandler.js')(repositoryBuilder);
+const validationHandler = require('./apiValidationHandler.js')(validator);
 
 router.get('/:resource', listHandler);
 router.get('/:resource/:id', itemHandler);

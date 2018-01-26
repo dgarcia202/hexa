@@ -1,8 +1,8 @@
-module.exports = () => {  // Inject dependencies here
+module.exports = (repositoryBuilder) => {  // Inject dependencies here
 
   return (req, res) => {
     console.log(`Items ${req.params.id} in resource ${req.params.resource}`);
-    let repository = require('./documentRepository.js')(req.params.resource);
+    let repository = repositoryBuilder(req.params.resource);
 
     repository.getById(req.params.id).then(result => {
       if (result.count == 0) {
