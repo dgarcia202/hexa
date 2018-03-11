@@ -44,6 +44,7 @@ typings/
 # Custom directories
 data/
 scripts/
+public/
 
 # Optional npm cache directory
 .npm

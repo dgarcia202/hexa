@@ -1,3 +1,5 @@
+"use strict";
+
 const configuration = require('../configuration.js');
 
 const fs = require('fs');

@@ -1,13 +1,23 @@
+const sinon = require('sinon');
 const assert = require('chai').assert;
 
 describe('API list route handler', () => {
-  it ('')
-});
+  it ('returns list of items in resource', () => {
 
-describe('Array', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.equal([1,2,3].indexOf(4), -1);
-    });
-  });
+    // arrange
+    const responseBody = [ {}, {} ];
+    let repoBuilderStub = sinon.stub().returns();
+    // const repositoryBuilder = require('../app/repositoryBuilder.js');
+    // sinon.stub(repositoryBuilder, 'getAll').returns(responseBody);
+
+    const sut = require('../app/apiListHandler.js')(repositoryBuilder);
+    let req = { params: { resource: 'resource' }};
+    let res = { send: sinon.spy() };
+
+    // act
+    sut(req, res);
+
+    // assert
+    assert(res.send.calledWith(responseBody));
+  })
 });
