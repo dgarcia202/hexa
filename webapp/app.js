@@ -11,6 +11,14 @@ Vue.component('hello-world', HelloWorldComponent);
 
 var app = new Vue({
   el: '#app',
-  data: {}
+  data: () => ({
+    title: 'HEXA',
+    copyright: 'HexaSoft 2018',
+    drawer: null,
+
+  }),
+  props: {
+    source: String
+  }
 }) ;
 
