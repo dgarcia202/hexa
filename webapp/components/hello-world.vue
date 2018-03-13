@@ -1,5 +1,7 @@
 <template>
-  <span class="display-4">{{ message }}</span>
+  <v-flex xs2>
+    <v-card>{{ message }}</v-card>
+  </v-flex>
 </template>
 
 <script>
