@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require("path");
 
 module.exports = {
-  entry: './webapp/index.js',
+  entry: './webapp/app.js',
   watch:true,
   output: {
     filename: 'bundle.js',
@@ -24,6 +24,10 @@ module.exports = {
           }
         }
       },
+      {
+        test: /\.vue$/,
+        use: ['vue-loader']
+      },      
       {
         test: /\.css$/,
         use: [
