@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const objectRegistry = require('./objectRegistry.js');
 const repositoryBuilder = require('./repositoryBuilder.js');
 const validator = require('./validator.js');
 
@@ -9,7 +10,9 @@ const insertHandler = require('./apiInsertHandler.js')(repositoryBuilder);
 const deleteHandler = require('./apiDeleteHandler.js')(repositoryBuilder);
 const updateHandler = require('./apiUpdateHandler.js')(repositoryBuilder);
 const validationHandler = require('./apiValidationHandler.js')(validator);
+const schemaHandler = require('./apiSchemaHandler.js')(objectRegistry);
 
+router.get('/', schemaHandler);
 router.get('/:resource', listHandler);
 router.get('/:resource/:id', itemHandler);
 router.post('/:resource', [validationHandler, insertHandler]);
