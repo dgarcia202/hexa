@@ -1,7 +1,9 @@
+import axios from '../../node_modules/axios/dist/axios'
+
 export default {
   methods: {
     getAllDefinitions: () => {
-      return [{ name: 'hola' }, { name: 'adios' }, { name: 'lalal' }];
+      return axios.get('http://localhost:3001/api/'); 
     }
   }
 }
