@@ -5,7 +5,7 @@
     app
   >
     <v-list dense>
-      <v-list-tile @click="">
+      <v-list-tile @click="loadHome">
         <v-list-tile-action>
           <v-icon>home</v-icon>
         </v-list-tile-action>
@@ -14,7 +14,7 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-for="resource in resources" :key="resource.id" @click="">
+      <v-list-tile v-for="resource in resources" :key="resource.id" @click="loadResource">
         <v-list-tile-action>
           <v-icon>widgets</v-icon>
         </v-list-tile-action>
@@ -40,9 +40,16 @@ export default {
   },
   created() {
     this.getAllDefinitions().then((result) => {
-      console.log(result);
       this.resources = result.data;
     });
+  },
+  methods: {
+    loadResource() {
+      this.$router.push('/resource/card.json');
+    },
+    loadHome() {
+      this.$router.push('/');
+    }    
   }
 }
 </script>
