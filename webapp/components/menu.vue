@@ -14,7 +14,7 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-for="resource in resources" :key="resource.id" @click="loadResource">
+      <v-list-tile v-for="resource in resources" :key="resource.id" @click="loadResource(resource)">
         <v-list-tile-action>
           <v-icon>widgets</v-icon>
         </v-list-tile-action>
@@ -34,18 +34,11 @@ export default {
   mixins: [SchemaService],
   props: ['isVisible'],
   data() {
-    return {
-      resources: []
-    }
-  },
-  created() {
-    this.getAllDefinitions().then((result) => {
-      this.resources = result.data;
-    });
+    return {}
   },
   methods: {
-    loadResource() {
-      this.$router.push('/resource/card.json');
+    loadResource(resource) {
+      this.$router.push('/resource/' + resource.id);
     },
     loadHome() {
       this.$router.push('/');

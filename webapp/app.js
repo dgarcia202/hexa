@@ -15,7 +15,7 @@ Vue.component('hx-menu', MenuComponent);
 
 const routes = [
   { path: '/', component: HomeComponent },
-  { path: '/resource/:id', component: ResourceComponent }
+  { path: '/resource/:id', component: ResourceComponent, props: true }
 ];
 
 const router = new VueRouter({
