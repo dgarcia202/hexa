@@ -2,11 +2,8 @@
   <v-layout>
     <v-flex xs8>
       <v-form v-model="valid">
-        <hx-text label="hola"></hx-text>
-        <v-text-field
-          label="E-mail"
-          required
-        ></v-text-field>
+        <hx-text label="Name"></hx-text>
+        <hx-text label="E-Mail"></hx-text>
       </v-form>
     </v-flex>
   </v-layout>
