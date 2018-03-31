@@ -14,6 +14,12 @@ const instance = {
       });
     }
   },
+  methods:{
+    getSchemaById: id => {
+      let filtered = this.resources.filtered(x => x.id == id);
+      return filtered.length > 0 ? filtered[0] : null;
+    }
+  }
 }
 
 export default instance;

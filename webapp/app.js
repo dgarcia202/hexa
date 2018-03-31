@@ -7,11 +7,13 @@ import Vuetify from '../node_modules/vuetify/dist/vuetify'
 import MenuComponent from './components/menu.vue'
 import HomeComponent from './components/home.vue'
 import ResourceComponent from './components/resource.vue'
+import TestComponent from './components/text.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
 
 Vue.component('hx-menu', MenuComponent);
+Vue.component('hx-text', TextComponent);
 
 const routes = [
   { path: '/', component: HomeComponent },
