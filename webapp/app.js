@@ -27,13 +27,13 @@ const router = new VueRouter({
 const app = new Vue({
   el: '#app',
   router,
+  props: {
+    source: String
+  },  
   data: {
     title: 'HEXA',
     copyright: 'HexaSoft 2018',
-    drawer: true,
-  },
-  props: {
-    source: String
+    drawer: true
   }
 }) ;
 
