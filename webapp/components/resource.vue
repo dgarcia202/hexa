@@ -27,9 +27,18 @@ export default {
     }
   },
   methods: {
-    addComponent: function () {
+    addComponent() {
       this.childComponents.push(TextComponent);
     }
+  },
+  created() {
+
+    console.log('>>>>>');
+    console.log(this.getSchemaById(this.id));
+
+    this.childComponents.push(TextComponent);
+    this.childComponents.push(TextComponent);
+    this.childComponents.push(TextComponent);
   }
 }
 </script>
