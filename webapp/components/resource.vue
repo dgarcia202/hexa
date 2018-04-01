@@ -33,6 +33,7 @@ export default {
   },
   created() {
 
+    // TODO: remove this
     console.log('>>>>>');
     console.log(this.getSchemaById(this.id));
 
