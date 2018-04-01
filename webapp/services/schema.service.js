@@ -10,14 +10,17 @@ const instance = {
     if (this.$data.resources.length == 0) {
       axios.get('http://localhost:3001/api/').then((result) => {
         this.$data.resources = result.data;
-        console.log(this.$data);
       });
     }
   },
   methods:{
     getSchemaById: id => {
-      let filtered = this.resources.filtered(x => x.id == id);
-      return filtered.length > 0 ? filtered[0] : null;
+      return new Promise((resolve, reject) => {
+        axios.get('http://localhost:3001/api/').then((result) => {
+          let filtered = result.data.filter(x => x.id == id);
+          resolve(filtered.length > 0 ? filtered[0] : null);
+        });        
+      });
     }
   }
 }

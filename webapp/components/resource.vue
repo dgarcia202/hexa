@@ -2,11 +2,8 @@
   <v-layout>
     <v-flex xs8>
       <v-form>
-        <v-btn color="success" @click="addComponent">Add component</v-btn>
-        <hx-text label="Name" ></hx-text>
-        <hx-text label="E-Mail"></hx-text>
-        <template v-for="child in childComponents">
-          <component :is="child" :key="child.name" v-bind="{label: 'hola'}"></component>
+        <template v-for="control in propertyControls">
+          <component :is="control.component" :key="control.name" v-bind="control.props"></component>
         </template>
       </v-form>
     </v-flex>
@@ -23,23 +20,23 @@ export default {
   props: ['id'],
   data() {
     return {
-      childComponents: []
-    }
-  },
-  methods: {
-    addComponent() {
-      this.childComponents.push(TextComponent);
+      propertyControls: []
     }
   },
   created() {
-
-    // TODO: remove this
-    console.log('>>>>>');
-    console.log(this.getSchemaById(this.id));
-
-    this.childComponents.push(TextComponent);
-    this.childComponents.push(TextComponent);
-    this.childComponents.push(TextComponent);
+    this.getSchemaById(this.id).then(schema => {
+      for (var key in schema.properties) {
+        if (schema.properties.hasOwnProperty(key)) {
+          this.propertyControls.push({
+            component: TextComponent,
+            name: key,
+            props: {
+              label: key
+            }
+          });
+        }
+      }      
+    });
   }
 }
 </script>
