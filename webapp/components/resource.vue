@@ -24,19 +24,28 @@ export default {
     }
   },
   created() {
-    this.getSchemaById(this.id).then(schema => {
-      for (var key in schema.properties) {
-        if (schema.properties.hasOwnProperty(key)) {
-          this.propertyControls.push({
-            component: TextComponent,
-            name: key,
-            props: {
-              label: key
-            }
-          });
-        }
-      }      
-    });
-  }
+    this.buildPropertyControls();
+  },
+  watch: {
+    '$route': 'buildPropertyControls'
+  },
+  methods: {
+    buildPropertyControls() {
+      this.propertyControls = [];
+      this.getSchemaById(this.id).then(schema => {
+        for (var key in schema.properties) {
+          if (schema.properties.hasOwnProperty(key)) {
+            this.propertyControls.push({
+              component: TextComponent,
+              name: key,
+              props: {
+                label: key
+              }
+            });
+          }
+        }      
+      });
+    }
+  },
 }
 </script>
