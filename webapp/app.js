@@ -7,6 +7,7 @@ import Vuetify from '../node_modules/vuetify/dist/vuetify'
 import MenuComponent from './components/menu.vue'
 import HomeComponent from './components/home.vue'
 import ResourceComponent from './components/resource.vue'
+import SearchResourceComponent from './components/search-resource.vue'
 import TextComponent from './components/text.vue'
 
 Vue.use(VueRouter);
@@ -17,7 +18,8 @@ Vue.component('hx-text', TextComponent);
 
 const routes = [
   { path: '/', component: HomeComponent },
-  { path: '/resource/:id', component: ResourceComponent, props: true }
+  // { path: '/resource/:id', component: ResourceComponent, props: true }
+  { path: '/resource/:id', component: SearchResourceComponent, props: true }
 ];
 
 const router = new VueRouter({
